@@ -4,7 +4,6 @@
 <head>
   <title>Add Department</title>
   <%-include('../partials/header') %>
-
 </head>
 
 <body>
@@ -22,11 +21,25 @@
     <main>
       <div class="head-title">
         <div class="left">
-          <h1>Welcome To ExScheduler</h1>
+          <h1>Add ProgramSemester</h1>
         </div>
       </div>
     </main>
-    
+    <!-- MAIN -->
+    <form action="/admin/addcourse" method="post">
+      <section id="content">
+
+        <div class="container">
+          <div class="input-container">
+            <label for="text">ProgramSemester:</label>
+            <input type="text" id="programsemester" name="programsemester"><br><br>
+            <label for="text">Course:</label>
+            <input type="text" id="course" name="course" style="width: 32.5%;"><br><br>
+            <button type="submit" id="LinkButton">Submit</button>
+          </div>
+        </div>
+      </section>
+    </form>
 
 
 
