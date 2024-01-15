@@ -20,6 +20,21 @@ const getadminlogin = (req, res) => {
 const getadminsignup = (req, res) => {
   res.render("admin/adminsignup");
 }
+const getProgramSemester=(req,res)=>{
+  res.render("admin/add-program-semester");
+}
+const getAddExamSchedule=(req,res)=>{
+  res.render("admin/add-exam-schedule");
+}
+const getAddCourse=(req,res)=>{
+  res.render("admin/add-course");
+}
+const getaddlink=(req,res)=>{
+  res.render("admin/add-link");
+}
+const getadddepartment=(req,res)=>{
+  res.render("admin/add-department");
+}
 
 const getLinkedCoursesWithoutPriority = async (req, res) => {
   try {
@@ -69,4 +84,9 @@ module.exports = {
   adminLogin,
   getadminlogin,
   getadminsignup,
+  getProgramSemester,
+  getAddExamSchedule,
+  getAddCourse,
+  getaddlink,
+  getadddepartment
 };
