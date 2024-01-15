@@ -16,7 +16,9 @@ const{
     adddepartment,
     addprogramsemester,
     addexamschedule,
-    addcourse
+    addcourse,
+    addlink,
+    fetchRoutine
 } = require('../controllers/admin.controllers');
 
 router.get("/", getDashboard);
@@ -30,6 +32,8 @@ router.get('/add-exam-schedule', getAddExamSchedule);
 router.get('/add-course', getAddCourse);
 router.get('/add-link',getaddlink);
 router.get('/add-department',getadddepartment);
+router.get('/fetch-routine', fetchRoutine);
+
 
 
 router.get('/userlogout', (req, res) => {
@@ -51,5 +55,6 @@ router.post('/admin/adddepartment',adddepartment);
 router.post('/admin/addprogramsemester',addprogramsemester);
 router.post('/admin/addexamschedule',addexamschedule);
 router.post('/admin/addcourse',addcourse);
+router.post('/admin/addlink',addlink)
 
 module.exports = router;

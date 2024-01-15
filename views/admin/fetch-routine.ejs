@@ -1,84 +1,68 @@
-<!-- SIDEBAR -->
-<section id="sidebar" >
-  <a href="#" class="brand">
-    <span class="text">Ex-scheduler</span>
-  </a>
-  <ul class="side-menu top">
-    <li>
-      <a href="#">
-        
-        <span class="text">Dashboard</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/add-program-semester">
-        
-        <span class="text">Add ProgramSemester</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/add-exam-schedule">
-        
-        <span class="text">Add ExamSchedule</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/add-course">
-        
-        <span class="text">Add Course</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/add-link">
-        
-        <span class="text">Add Link</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/generate-routine">
-        
-        <span class="text">Generate Routine</span>
-      </a>
-    </li>
-    <li class="active">
-      <a routerLink="/fetch-routine">
-        
-        <span class="text">Fetch Routine</span>
-      </a>
-    </li>
-  </ul>
-  <ul class="side-menu">
-    <li>
-      <a href="#" class="logout">
-        
-        <span class="text">Logout</span>
-      </a>
-    </li>
-  </ul>
-</section>
-<!-- SIDEBAR -->
+<!doctype html>
+<html lang="en">
 
-  <!-- CONTENT -->
-  <section id="content">
+<head>
+  <title>Add Department</title>
+  <%-include('../partials/header') %>
+  <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+
+<body>
+  <!-- Include the sidebar partial -->
+  <%-include('../partials/nav-sidenav') %>
+    <!-- CONTENT -->
+
     <!-- NAVBAR -->
     <nav>
-      
+
     </nav>
     <!-- NAVBAR -->
-  
+
     <!-- MAIN -->
     <main>
       <div class="head-title">
         <div class="left">
-          <h1>Fetch Routine</h1>
+          <h1>Final Routine</h1>
         </div>
       </div>
     </main>
     <!-- MAIN -->
-  </section>
-  
-  <section id="content">
+    <section class="content">
+      <div class="container">
+        <table>
+          <% for (let i = 0; i < scheduleArray.length; i++) { %>
+              <tr>
+                  <% for (let j = 0; j < scheduleArray[i].length; j++) { %>
+                      <% if (i === 0) { %>
+                          <th><%= scheduleArray[i][j] %></th>
+                      <% } else { %>
+                          <td><%= scheduleArray[i][j] %></td>
+                      <% } %>
+                  <% } %>
+              </tr>
+          <% } %>
+      </table>
+      </div>
+    </section>
+    
 
-  
-  </section>
-  <!-- CONTENT -->
+
+
+
+    
+</body>
+
+</html>
