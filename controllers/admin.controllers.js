@@ -76,6 +76,149 @@ const getadmins = async (req, res) => {
   }
 };
 
+const adddepartment = async (req, res) => {
+  let department=req.body.department;
+  console.log(department);
+  try {
+    const apiResponse = await axios.post(
+      "https://localhost:7227/api/Admin/adddepartment",
+      {
+        "departmentName": department,
+      },
+      {
+        httpsAgent: agent,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${req.user.token}`,
+        },
+      }
+    );
+    // res.json(apiResponse.data);
+    console.log(apiResponse.data.message);
+    if(apiResponse.data.message=="Department added successfully")
+    {
+      let no_err= [];
+      no_err.push({ message: apiResponse.data.message });
+      res.render("admin/add-department", { no_err });
+    }
+    else{
+      let error=[];
+      error.push({message:apiResponse.data.message});
+      res.render("admin/add-department",{error});
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+const addprogramsemester = async (req, res) => {
+  let programsemester=req.body.programsemester;
+  let department=req.body.department;
+  console.log(programsemester);
+  console.log(department);
+  try {
+    const apiResponse = await axios.post(
+      "https://localhost:7227/api/Admin/addprogrammesemester",
+      {
+        "programmeSemesterName": programsemester,
+        "departmentName": department,
+      },
+      {
+        httpsAgent: agent,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${req.user.token}`,
+        },
+      }
+    );
+    console.log(apiResponse.data.message);
+    if(apiResponse.data.message=="ProgrammeSemester added successfully")
+    {
+      let no_err= [];
+      no_err.push({ message: apiResponse.data.message });
+      res.render("admin/add-program-semester", { no_err });
+    }
+    else{
+      let error=[];
+      error.push({message:apiResponse.data.message});
+      res.render("admin/add-program-semester",{error});
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+const addexamschedule = async (req, res) => {
+  let examdate=req.body.examdate;
+  console.log(examdate);
+  try {
+    const apiResponse = await axios.post(
+      "https://localhost:7227/api/Admin/addexamschedule",
+      {
+        "examDate": examdate,
+      },
+      {
+        httpsAgent: agent,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${req.user.token}`,
+        },
+      }
+    );
+    console.log(apiResponse.data.message);
+    if(apiResponse.data.message=="ExamSchedule added successfully")
+    {
+      let no_err= [];
+      no_err.push({ message: apiResponse.data.message });
+      res.render("admin/add-exam-schedule", { no_err });
+    }
+    else{
+      let error=[];
+      error.push({message:apiResponse.data.message});
+      res.render("admin/add-exam-schedule",{error});
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+const addcourse = async(req,res)=>{
+  let programsemester=req.body.programsemester;
+  let course=req.body.course;
+  console.log(programsemester);
+  console.log(course);
+  try{
+    const apiResponse = await axios.post(
+      "https://localhost:7227/api/Admin/addcourse",
+      {
+        "courseName": course,
+        "programSemesterName": programsemester
+      },
+      {
+        httpsAgent: agent,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${req.user.token}`,
+        },
+      }
+    );
+    console.log(apiResponse.data.message);
+    if(apiResponse.data.message=="Course added successfully")
+    {
+      let no_err= [];
+      no_err.push({ message: apiResponse.data.message });
+      res.render("admin/add-course", { no_err });
+    }
+    else{
+      let error=[];
+      error.push({message:apiResponse.data.message});
+      res.render("admin/add-course",{error});
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
 module.exports = {
   getDashboard,
   getAdminDashboard,
@@ -88,5 +231,9 @@ module.exports = {
   getAddExamSchedule,
   getAddCourse,
   getaddlink,
-  getadddepartment
+  getadddepartment,
+  adddepartment,
+  addprogramsemester,
+  addexamschedule,
+  addcourse
 };

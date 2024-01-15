@@ -1,115 +1,44 @@
-<!-- views/layout.ejs -->
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/add-course.css">
-  <link rel="stylesheet" href="/css/add-exam-schedule.css">
-  <link rel="stylesheet" href="/css/add-link.css">
-  <link rel="stylesheet" href="/css/add-program-semester.css">
-  <link rel="stylesheet" href="/css/fetch-routine.css">
-  <link rel="stylesheet" href="/css/generate-routine.css">
-  <link rel="stylesheet" href="/css/admin-dashboard.css">
-  <link rel="stylesheet" href="/css/nav-sidenav.css">
-  <link rel="stylesheet" href="/css/footer.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <!-- Include additional stylesheets if needed -->
-  <title>Your Page Title</title>
+  <title>Add Department</title>
+  <%-include('../partials/header') %>
 </head>
 
 <body>
-
   <!-- Include the sidebar partial -->
-  <%-include('../partials/nav-sidenav') %> 
+  <%-include('../partials/nav-sidenav') %>
+    <!-- CONTENT -->
 
- <!-- CONTENT -->
- <section id="content">
-  <!-- NAVBAR -->
-  <nav>
-    
-  </nav>
-  <!-- NAVBAR -->
+    <!-- NAVBAR -->
+    <nav>
 
-  <!-- MAIN -->
-  <main>
-    <div class="head-title">
-      <div class="left">
-        <h1>Add Exam Schedule</h1>
+    </nav>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main>
+      <div class="head-title">
+        <div class="left">
+          <h1>Add Exam Schedule(Dates)</h1>
+        </div>
       </div>
-    </div>
-  </main>
-  <!-- MAIN -->
-</section>
+    </main>
+    <!-- MAIN -->
+    <form action="/admin/addexamschedule" method="post">
+      <section id="content">
 
-<section id="content">
+        <div class="container">
+          <div class="input-container">
+            <label for="date">Date:</label>
+            <input type="date" id="examdate" name="examdate" style="width:auto;"><br><br>
+            <button type="submit" id="LinkButton">Submit</button>
+          </div>
+        </div>
+      </section>
+    </form>
 
-<div class="container">
-  <div class="input-container">
-    
-      <label for="program">CSE4553:</label>
-      <input type="date">
-      <input type="date">
-      <input type="date">
-      <button id="confirmButton">Confirm</button>
-    
-  </div>
-</div>
-<div class="container">
-  <div class="input-container">
-      
-          <label for="program">CSE4504:</label>
-          <input type="date">
-          <input type="date">
-          <input type="date">
-          <button id="confirmButton">Confirm</button>
-      
-  </div>
-</div>
-<div class="container">
-  <div class="input-container">
-      <label for="program">CSE4511:</label>
-      <input type="date">
-      <input type="date">
-      <input type="date">
-      <button id="confirmButton">Confirm</button>
-  </div>
-</div>
-<div class="container">
-  <div class="input-container">
-      <label for="program">CSE4593:</label>
-      <input type="date">
-      <input type="date">
-      <input type="date">
-      <button id="confirmButton">Confirm</button>
-  </div>
-</div>
-<div class="container">
-  <div class="input-container">
-      <label for="program">CSE4583:</label>
-      <input type="date">
-      <input type="date">
-      <input type="date">
-      <button id="confirmButton">Confirm</button>
-  </div>
-</div>
-<div class="container">
-  <div class="input-container">
-      <label for="program">CSE4523:</label>
-      <input type="date">
-      <input type="date">
-      <input type="date">
-      <button id="confirmButton">Confirm</button>
-  </div>
-</div>
-
-
-</section>
-
-  </section>
 
 </body>
 
