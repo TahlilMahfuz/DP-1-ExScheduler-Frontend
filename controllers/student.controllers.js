@@ -191,36 +191,45 @@ const postsubmitdateandpriority = async (req, res) => {
     try {
         const { linkname, dateInput, priorityInput } = req.body;
         console.log(linkname, dateInput, priorityInput);
-        res.json({ linkname, dateInput, priorityInput });
 
-        // const resultArray = [];
-        // let j = 0
-        // for (let i = 0; i < linkname.length; i++) {
-        //     for (; j < linkname.length*3; j++) {
-        //         const linkName = linkname[i];
-        //         const examDate = dateInput[j];
-        //         const priority = parseInt(priorityInput[j]);
+        const resultArray = [];
+        let j = 0
+        for (let i = 0; i < linkname.length; i++) {
+            for (let k=0; k < 3; k++,j++) {
+                const linkName = linkname[i];
+                const examDate = dateInput[j];
+                const priority = parseInt(priorityInput[j]);
 
-        //         resultArray.push({ linkName, examDate, priority });
-        //     }
-        // }
+                resultArray.push({ linkName, examDate, priority });
+            }
+        }
 
-        // console.log(resultArray);
+        console.log(resultArray);
+        // res.json(resultArray);
 
-        // const apiResponse = await axios.post(
-        //     'https://localhost:7227/api/Student/PostLinkedCourses', 
-        //     resultArray,
-        //     {
-        //         httpsAgent: agent,
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `Bearer ${req.user.token}`,
-        //         },
-        //     }
-        // );
+        const apiResponse = await axios.post(
+            'https://localhost:7227/api/Student/PostLinkedCourses', 
+            resultArray,
+            {
+                httpsAgent: agent,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${req.user.token}`,
+                },
+            }
+        );
 
-        // console.log(apiResponse.data);
-        // res.json(apiResponse.data);
+        console.log(apiResponse.data.message);
+        if (apiResponse.data.message === 'Dates with priority added successfully') {
+            let no_err = [];
+            no_err.push({ message: apiResponse.data.message });
+            res.render('student/dashboard', { no_err });
+
+        } else {
+            let error = [];
+            error.push({ message: apiResponse.data.message });
+            res.render('student/dashboard', { error });
+        }
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Internal Server Error' });
