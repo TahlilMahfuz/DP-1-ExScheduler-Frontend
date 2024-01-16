@@ -67,16 +67,23 @@ const submitfinalpreference = async (req, res) => {
     try {
         const { courses, dates } = req.body;
         console.log(courses, dates);
-
+        let formattedData = [];
+        if(Array.isArray(courses)) {
         // Assuming courses and dates are arrays of strings
-        const formattedData = courses.map((courseName, index) => ({
-            examDate: dates[index],
-            courseName: courseName,
-        }));
-
+            formattedData = courses.map((courseName, index) => ({
+                examDate: dates[index],
+                courseName: courseName,
+            }));
+        }
+        else {
+            formattedData = [{
+                examDate: dates,
+                courseName: courses,
+            }];
+        }
         // Log the formatted data for verification
         console.log(formattedData);
-
+        // res.json(formattedData);
         const apiResponse = await axios.post(
             "https://localhost:7227/api/Student/PostStudentPreferences",
             formattedData,
@@ -89,9 +96,9 @@ const submitfinalpreference = async (req, res) => {
             }
         );
 
-        console.log(apiResponse.data.message);
+        console.log(apiResponse.data.info);
 
-        if (apiResponse.data.message === "Student preferences added successfully") {
+        if (apiResponse.data.info === "Student preferences added successfully") {
             let no_err = [{ message: apiResponse.data.info }];
             res.render("student/dashboard", { no_err });
         } else {
