@@ -55,6 +55,46 @@ const adminLogin = passport.authenticate("admin", {
   failureFlash: true
 });
 
+const adminSignup = async (req, res) => {
+  let { adminname,adminpassword,cadminpassword,adminemail } = req.body;
+  console.log(adminname);
+  console.log(adminpassword);
+  console.log(adminemail);
+  console.log(cadminpassword);
+  try {
+    const apiResponse = await axios.post(
+      "https://localhost:7227/api/Admin/adminsignup",
+      {
+        "adminName": adminname,
+        "adminEmail": adminemail,
+        "adminPassword": adminpassword,
+        "adminConfirmPassword": cadminpassword
+      },
+      {
+        httpsAgent: agent,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(apiResponse.data.message);
+    if(apiResponse.data.message=="Admin Created Successfully")
+    {
+      let no_err= [];
+      no_err.push({ message: apiResponse.data.message });
+      res.render("admin/adminsignup", { no_err });
+    }
+    else{
+      let error=[];
+      error.push({message:apiResponse.data.message});
+      res.render("admin/adminsignup",{error});
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+
+}
+
 const getTokenFromLocalStorage = () => {
   return localStorage.getItem("jwtToken");
 };
@@ -387,5 +427,6 @@ module.exports = {
   addexamschedule,
   addcourse,
   addlink,
-  fetchRoutine
+  fetchRoutine,
+  adminSignup
 };

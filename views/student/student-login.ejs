@@ -11,7 +11,7 @@
                             <div class="form-group pt-3">
                                 <div class="input-field" [class.error]="loginForm.controls['email'].dirty && loginForm.hasError('required','email')">
                                     <span class="fa fa-envelope p-2"></span>
-                                    <input formControlName="email" type="email" placeholder="Email">
+                                    <input for ControlName="email" type="email" placeholder="Email">
                                 </div>
                                 <small *ngIf="loginForm.controls['email'].hasError('email')" class="text-danger">Invalid email format</small>
                             </div>
