@@ -166,6 +166,67 @@ const studentsignup = async (req, res) => {
         console.error(err.message);
     }
 };
+
+const getProvideDateAndPriority = async (req, res) => {
+    try {
+        const apiResponse = await axios.get(
+            "https://localhost:7227/api/Student/GetLinkedCourses",
+            {
+                httpsAgent: agent,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${req.user.token}`,
+                },
+            }
+        );
+        console.log(apiResponse.data.info);
+        const linkWithcourses = apiResponse.data.info;
+        res.render("student/providedateandpriority", { linkWithcourses });
+    } catch (err) {
+        console.error(err.message);
+    }
+}
+
+const postsubmitdateandpriority = async (req, res) => {
+    try {
+        const { linkname, dateInput, priorityInput } = req.body;
+        console.log(linkname, dateInput, priorityInput);
+        res.json({ linkname, dateInput, priorityInput });
+
+        // const resultArray = [];
+        // let j = 0
+        // for (let i = 0; i < linkname.length; i++) {
+        //     for (; j < linkname.length*3; j++) {
+        //         const linkName = linkname[i];
+        //         const examDate = dateInput[j];
+        //         const priority = parseInt(priorityInput[j]);
+
+        //         resultArray.push({ linkName, examDate, priority });
+        //     }
+        // }
+
+        // console.log(resultArray);
+
+        // const apiResponse = await axios.post(
+        //     'https://localhost:7227/api/Student/PostLinkedCourses', 
+        //     resultArray,
+        //     {
+        //         httpsAgent: agent,
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             Authorization: `Bearer ${req.user.token}`,
+        //         },
+        //     }
+        // );
+
+        // console.log(apiResponse.data);
+        // res.json(apiResponse.data);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 module.exports = {
     getstudentlogin,
     studentLogin,
@@ -174,4 +235,6 @@ module.exports = {
     getstudentsignup,
     studentsignup,
     submitfinalpreference,
+    getProvideDateAndPriority,
+    postsubmitdateandpriority
 };
