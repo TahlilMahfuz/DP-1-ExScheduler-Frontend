@@ -13,7 +13,7 @@ const getstudentlogin = (req, res) => {
 
 const studentLogin = passport.authenticate("student", {
     successRedirect: "/student/dashboard",
-    failureRedirect: "student/studentlogin",
+    failureRedirect: "studentlogin",
     failureFlash: true,
 });
 
