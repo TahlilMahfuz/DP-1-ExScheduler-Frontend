@@ -17,14 +17,14 @@ initializeStudentPassport(passport);
 
 require('dotenv').config()
 
-const port=process.env.PORT || 3001;
+const port=3000;
 
 app.set('view engine',"ejs");
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(
     session({
-      secret: process.env.SESSION_SECRET,
+      secret: 'tahlil',
       resave: true,
       save:true,
       saveUninitialized: true
