@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const axios = require("axios");
 const https = require("https");
+const { link } = require("fs");
 
 const agent = new https.Agent({
     rejectUnauthorized: false,
@@ -233,59 +234,102 @@ const getProvideDateAndPriority = async (req, res) => {
 const postsubmitdateandpriority = async (req, res) => {
     try {
         const { linkname, dateInput, priorityInput } = req.body;
-        console.log(linkname, dateInput, priorityInput);
-
-        let isDuplicate = false;
-        let dateinput=dateInput;
-        for(let i=0;i<dateinput.length;i++){
-            let arr=[];
-            for(let j=0;j<3;j++,i++){
-                arr.push(dateinput[j]);
+        console.log(linkname);
+        console.log("hi");
+        console.log(dateInput);
+        console.log("hi");
+        console.log(priorityInput);
+        if(Array.isArray(linkname)){
+            let isDuplicate = false;
+            let dateinput=dateInput;
+            for(let i=0;i<dateinput.length;i++){
+                let arr=[];
+                for(let j=0;j<3;j++,i++){
+                    arr.push(dateinput[j]);
+                }
+                isDuplicate = arr.some((val, i) => arr.indexOf(val) !== i);
             }
-            isDuplicate = arr.some((val, i) => arr.indexOf(val) !== i);
+            if(isDuplicate) {
+                let error = [{ info: "Duplicate dates are not allowed" }];
+                res.render("student/dashboard", { error });
+            }      
+            else{
+                    const resultArray = [];
+                let j = 0
+                for (let i = 0; i < linkname.length; i++) {
+                    for (let k=0; k < 3; k++,j++) {
+                        const linkName = linkname[i];
+                        const examDate = dateInput[j];
+                        const priority = parseInt(priorityInput[j]);
+
+                        resultArray.push({ linkName, examDate, priority });
+                    }
+                }
+
+                console.log(resultArray);
+
+                const apiResponse = await axios.post(
+                    'https://localhost:7227/api/Student/PostLinkedCourses', 
+                    resultArray,
+                    {
+                        httpsAgent: agent,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${req.user.token}`,
+                        },
+                    }
+                );
+
+                console.log(apiResponse.data.message);
+                if (apiResponse.data.message === 'Dates with priority added successfully') {
+                    let no_err = [];
+                    no_err.push({ message: apiResponse.data.message });
+                    res.render('student/dashboard', { no_err });
+
+                } else {
+                    let error = [];
+                    error.push({ info: apiResponse.data.message });
+                    res.render('student/dashboard', { error });
+                }
+            }
         }
-        if(isDuplicate) {
-            let error = [{ info: "Duplicate dates are not allowed" }];
-            res.render("student/dashboard", { error });
-        }      
         else{
+            console.log("I am here");
             const resultArray = [];
-        let j = 0
-        for (let i = 0; i < linkname.length; i++) {
-            for (let k=0; k < 3; k++,j++) {
-                const linkName = linkname[i];
-                const examDate = dateInput[j];
-                const priority = parseInt(priorityInput[j]);
+                let j = 0
+                const linkName = linkname;
+                    for (let k=0; k < 3; k++,j++) {
+                        const examDate = dateInput[j];
+                        const priority = parseInt(priorityInput[j]);
 
-                resultArray.push({ linkName, examDate, priority });
-            }
-        }
+                        resultArray.push({ linkName, examDate, priority });
+                    }
 
-        console.log(resultArray);
+                console.log(resultArray);
 
-        const apiResponse = await axios.post(
-            'https://localhost:7227/api/Student/PostLinkedCourses', 
-            resultArray,
-            {
-                httpsAgent: agent,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${req.user.token}`,
-                },
-            }
-        );
+                const apiResponse = await axios.post(
+                    'https://localhost:7227/api/Student/PostLinkedCourses', 
+                    resultArray,
+                    {
+                        httpsAgent: agent,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${req.user.token}`,
+                        },
+                    }
+                );
 
-        console.log(apiResponse.data.message);
-        if (apiResponse.data.message === 'Dates with priority added successfully') {
-            let no_err = [];
-            no_err.push({ message: apiResponse.data.message });
-            res.render('student/dashboard', { no_err });
+                console.log(apiResponse.data.message);
+                if (apiResponse.data.message === 'Dates with priority added successfully') {
+                    let no_err = [];
+                    no_err.push({ message: apiResponse.data.message });
+                    res.render('student/dashboard', { no_err });
 
-        } else {
-            let error = [];
-            error.push({ info: apiResponse.data.message });
-            res.render('student/dashboard', { error });
-        }
+                } else {
+                    let error = [];
+                    error.push({ info: apiResponse.data.message });
+                    res.render('student/dashboard', { error });
+                }
         }
     } catch (err) {
         console.error(err.message);
