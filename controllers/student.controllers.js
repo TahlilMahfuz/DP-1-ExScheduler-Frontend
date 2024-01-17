@@ -80,6 +80,28 @@ const getstudentfinalpreference = async (req, res) => {
         }
         console.log(availableDates);
 
+
+
+
+        // const apiResponse0 = await axios.get(
+        //     "https://localhost:7227/api/Student/GetCheckPreferences",
+        //     {
+        //         httpsAgent: agent,
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             Authorization: `Bearer ${req.user.token}`,
+        //         },
+        //     }
+        // );
+        // if(apiResponse0.data){
+        //     console.log("Hi i am here");
+        //     res.json({message:"Hi i am here"});
+        // }
+        // else{
+        //     res.json({message:"Go away"});
+        // }
+
+
         res.render("student/studentfinalpreference", { courses: combinedCourses, availableDates });
     } catch (err) {
         console.error(err.message);
