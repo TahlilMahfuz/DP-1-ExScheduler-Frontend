@@ -13,7 +13,7 @@ const getstudentlogin = (req, res) => {
 
 const studentLogin = passport.authenticate("student", {
     successRedirect: "/student/dashboard",
-    failureRedirect: "student/studentlogin",
+    failureRedirect: "studentlogin",
     failureFlash: true,
 });
 
@@ -56,7 +56,31 @@ const getstudentfinalpreference = async (req, res) => {
                     .examDate || null,
         }));
 
-        res.render("student/studentfinalpreference", { courses: combinedCourses });
+        const apiResponse2 = await axios.get(
+            "https://localhost:7227/api/Student/GetAvailableCourses",
+            {
+                httpsAgent: agent,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${req.user.token}`,
+                },
+            }
+        );
+        let availableDates=[];
+        availableDates=apiResponse2.data.info;
+
+        for (let i = 0; i < combinedCourses.length; i++) {
+            console.log(apiResponse2.data.info[i]);
+            console.log(combinedCourses[i].examDate);
+            const index = availableDates.findIndex(date => date === combinedCourses[i].examDate);
+    
+            if (index !== -1) {
+                availableDates.splice(index, 1);
+            }
+        }
+        console.log(availableDates);
+
+        res.render("student/studentfinalpreference", { courses: combinedCourses, availableDates });
     } catch (err) {
         console.error(err.message);
     }
@@ -67,7 +91,14 @@ const submitfinalpreference = async (req, res) => {
     try {
         const { courses, dates } = req.body;
         console.log(courses, dates);
-        let formattedData = [];
+        //check if dates array has duppliacte values
+        const isDuplicate = dates.some((val, i) => dates.indexOf(val) !== i);
+        if(isDuplicate) {
+            let error = [{ info: "Duplicate dates are not allowed" }];
+            res.render("student/dashboard", { error });
+        }
+        else{
+            let formattedData = [];
         if(Array.isArray(courses)) {
         // Assuming courses and dates are arrays of strings
             formattedData = courses.map((courseName, index) => ({
@@ -83,7 +114,6 @@ const submitfinalpreference = async (req, res) => {
         }
         // Log the formatted data for verification
         console.log(formattedData);
-        // res.json(formattedData);
         const apiResponse = await axios.post(
             "https://localhost:7227/api/Student/PostStudentPreferences",
             formattedData,
@@ -102,8 +132,9 @@ const submitfinalpreference = async (req, res) => {
             let no_err = [{ message: apiResponse.data.info }];
             res.render("student/dashboard", { no_err });
         } else {
-            let error = [{ message: apiResponse.data.info }];
+            let error = [{ info: apiResponse.data.info }];
             res.render("student/dashboard", { error });
+        }
         }
     } catch (err) {
         console.error(err.message);
@@ -159,7 +190,7 @@ const studentsignup = async (req, res) => {
             res.render("student/studentsignup", { no_err });
         } else {
             let error = [];
-            error.push({ message: apiResponse.data.message });
+            error.push({ info: apiResponse.data.message });
             res.render("student/studentsignup", { error });
         }
     } catch (err) {
@@ -179,9 +210,21 @@ const getProvideDateAndPriority = async (req, res) => {
                 },
             }
         );
+        const apiResponse2 = await axios.get(
+            "https://localhost:7227/api/Student/GetAvailableCourses",
+            {
+                httpsAgent: agent,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${req.user.token}`,
+                },
+            }
+        );
+        let availableDates=[];
+        availableDates=apiResponse2.data.info;
         console.log(apiResponse.data.info);
         const linkWithcourses = apiResponse.data.info;
-        res.render("student/providedateandpriority", { linkWithcourses });
+        res.render("student/providedateandpriority", { linkWithcourses ,availableDates});
     } catch (err) {
         console.error(err.message);
     }
@@ -191,36 +234,59 @@ const postsubmitdateandpriority = async (req, res) => {
     try {
         const { linkname, dateInput, priorityInput } = req.body;
         console.log(linkname, dateInput, priorityInput);
-        res.json({ linkname, dateInput, priorityInput });
 
-        // const resultArray = [];
-        // let j = 0
-        // for (let i = 0; i < linkname.length; i++) {
-        //     for (; j < linkname.length*3; j++) {
-        //         const linkName = linkname[i];
-        //         const examDate = dateInput[j];
-        //         const priority = parseInt(priorityInput[j]);
+        let isDuplicate = false;
+        let dateinput=dateInput;
+        for(let i=0;i<dateinput.length;i++){
+            let arr=[];
+            for(let j=0;j<3;j++,i++){
+                arr.push(dateinput[j]);
+            }
+            isDuplicate = arr.some((val, i) => arr.indexOf(val) !== i);
+        }
+        if(isDuplicate) {
+            let error = [{ info: "Duplicate dates are not allowed" }];
+            res.render("student/dashboard", { error });
+        }      
+        else{
+            const resultArray = [];
+        let j = 0
+        for (let i = 0; i < linkname.length; i++) {
+            for (let k=0; k < 3; k++,j++) {
+                const linkName = linkname[i];
+                const examDate = dateInput[j];
+                const priority = parseInt(priorityInput[j]);
 
-        //         resultArray.push({ linkName, examDate, priority });
-        //     }
-        // }
+                resultArray.push({ linkName, examDate, priority });
+            }
+        }
 
-        // console.log(resultArray);
+        console.log(resultArray);
 
-        // const apiResponse = await axios.post(
-        //     'https://localhost:7227/api/Student/PostLinkedCourses', 
-        //     resultArray,
-        //     {
-        //         httpsAgent: agent,
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `Bearer ${req.user.token}`,
-        //         },
-        //     }
-        // );
+        const apiResponse = await axios.post(
+            'https://localhost:7227/api/Student/PostLinkedCourses', 
+            resultArray,
+            {
+                httpsAgent: agent,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${req.user.token}`,
+                },
+            }
+        );
 
-        // console.log(apiResponse.data);
-        // res.json(apiResponse.data);
+        console.log(apiResponse.data.message);
+        if (apiResponse.data.message === 'Dates with priority added successfully') {
+            let no_err = [];
+            no_err.push({ message: apiResponse.data.message });
+            res.render('student/dashboard', { no_err });
+
+        } else {
+            let error = [];
+            error.push({ info: apiResponse.data.message });
+            res.render('student/dashboard', { error });
+        }
+        }
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Internal Server Error' });

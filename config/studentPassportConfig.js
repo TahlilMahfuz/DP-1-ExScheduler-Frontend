@@ -33,15 +33,18 @@ function initialize(passport) {
       );
 
       // Check response status
-      if (response.status == 200) {
+      if (response.data.token == 'Sorry you are not authorized' || 
+      response.data.token == 'Password is incorrect' || 
+      response.data.token == 'Email does not exist') {
+        console.log("Student Login Failed");
+        error.push({ message: "Invalid Credentials" });
+        return done(null, false, { message: "Invalid Credentials" });
+        
+      } else {
         console.log("Student Login Successful");
         console.log(response.data);
         let token = response.data.token;
         return done(null, {token});
-      } else {
-        console.log("Student Login Failed");
-        error.push({ message: "Incorrect Password" });
-        return done(null, false, { message: "Incorrect Password" });
       }
     } catch (err) {
       console.error("Error during Student authentication:", err);

@@ -33,8 +33,18 @@
                                         <h6 class="card-subtitle mb-2 text-muted">Course Name: <%= course %></h6>
                                         <% for(let i=0; i<3; i++) { %>
                                             <label for="dateInput<%= i %>">Date:</label>
-                                            <input type="text" class="form-control" id="dateInput<%= i %>" name="dateInput" required>
-                                        <% } %>
+                                            <!-- <input type="text" class="form-control" id="dateInput<%= i %>" name="dateInput" required> -->
+                                            
+
+                                            <select class="form-control" id="dateInput<%= i %>" name="dateInput" required>
+                                                <option value="" selected disabled>Select a Date</option>
+                                                <% for (const date of availableDates) { %>
+                                                    <option value="<%= date %>"><%= date %></option>
+                                                <% } %>
+                                            </select>
+                                        
+                                        
+                                            <% } %>
                                         <% for(let i=0; i<3; i++) { %>
                                             <label for="priorityInput<%= i %>">Priority:</label>
                                             <input type="text" class="form-control" id="priorityInput<%= i %>" name="priorityInput" required>
