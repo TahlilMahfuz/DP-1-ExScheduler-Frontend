@@ -10,35 +10,35 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
+
     <title>Student Dashboard</title>
     <%-include('../partials/header') %>
 </head>
 
 <body>
-    <section class="vh-100" style="background-color: #20315e; margin-top: -50px;">
-        <%-include('../partials/navstudent') %>
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
+  <section class="vh-200" style="background-image: url('../img/fade1.jpeg'); background-color: #20315e; margin-top: -50px; background-size: cover; background-position: center;">
+    <%-include('../partials/navstudent') %>
+    <div class="container py-5 vh-100 d-flex justify-content-center align-items-center">
+        <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
-              <div class="card" style="border-radius: 1rem;">
+
                 <div class="row g-0">
-                  <div class="col-md-6 col-lg-5 d-none d-md-block">
-                    <img src="../img/student.jpg" alt="login form" class="img-fluid h-100" style="border-radius: 1rem 0 0 1rem;" />
-                  </div>
-                  <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                    <div class="card-body p-4 p-lg-5 text-black">
-    
-                      <h1 style="align-content: center;">Welcome!</h1>
-                      <h2>Please provide your preferences</h2>
-        
+
+                  <div class="col-md-6 col-lg-7 d-flex align-items-center justify-content-center">
+                    <div class="card-body p-4 p-lg-5 text-black text-center">
+
+                        <h1 style="font-size: 5.5rem; color: #000000;">Welcome!</h1>
+                        <h2 style="font-size: 2rem; color: #000000; white-space: nowrap;">Please provide your preferences</h2>
+
                     </div>
-                  </div>
                 </div>
-              </div>
+
+                </div>
+
             </div>
-          </div>
         </div>
-      </section>
+    </div>
+</section>
 
     <%-include('../partials/footer') %>
     
