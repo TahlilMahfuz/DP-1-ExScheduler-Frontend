@@ -37,7 +37,15 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><%= course.courseName %></h5>
                                         <input type="hidden" class="form-control" name="courses" value="<%= course.courseName %>" readonly>
-                                        <input type="text" class="form-control" name="dates" value="<%= course.examDate %>">
+                                        <!-- <input type="text" class="form-control" name="dates" value="<%= course.examDate %>"> -->
+                                    
+                                        <select class="form-control" name="dates" required>
+                                            <option value="" selected disabled>Select a Date</option>
+                                            <% for (const date of availableDates) { %>
+                                                <option value="<%= date %>"><%= date %></option>
+                                            <% } %>
+                                        </select>
+                                    
                                     </div>
                                 </div>
                             <% } %>
