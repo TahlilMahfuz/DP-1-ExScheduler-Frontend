@@ -113,11 +113,53 @@ const submitfinalpreference = async (req, res) => {
     try {
         const { courses, dates } = req.body;
         console.log(courses, dates);
-        //check if dates array has duppliacte values
-        const isDuplicate = dates.some((val, i) => dates.indexOf(val) !== i);
-        if(isDuplicate) {
-            let error = [{ info: "Duplicate dates are not allowed" }];
-            res.render("student/dashboard", { error });
+        // check if dates array has duppliacte values
+        if(Array.isArray(dates)){
+            const isDuplicate = dates.some((val, i) => dates.indexOf(val) !== i);
+            
+            if(isDuplicate) {
+                let error = [{ info: "Duplicate dates are not allowed" }];
+                res.render("student/dashboard", { error });
+            }
+            else{
+                let formattedData = [];
+            if(Array.isArray(courses)) {
+            // Assuming courses and dates are arrays of strings
+                formattedData = courses.map((courseName, index) => ({
+                    examDate: dates[index],
+                    courseName: courseName,
+                }));
+            }
+            else {
+                formattedData = [{
+                    examDate: dates,
+                    courseName: courses,
+                }];
+            }
+            // Log the formatted data for verification
+            console.log(formattedData);
+            const apiResponse = await axios.post(
+                "https://localhost:7227/api/Student/PostStudentPreferences",
+                formattedData,
+                {
+                    httpsAgent: agent,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${req.user.token}`,
+                    },
+                }
+            );
+    
+            console.log(apiResponse.data.info);
+    
+            if (apiResponse.data.info === "Student preferences added successfully") {
+                let no_err = [{ message: apiResponse.data.info }];
+                res.render("student/dashboard", { no_err });
+            } else {
+                let error = [{ info: apiResponse.data.info }];
+                res.render("student/dashboard", { error });
+            }
+            }
         }
         else{
             let formattedData = [];
@@ -158,6 +200,8 @@ const submitfinalpreference = async (req, res) => {
             res.render("student/dashboard", { error });
         }
         }
+        
+        
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Internal Server Error" });
