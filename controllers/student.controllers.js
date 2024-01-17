@@ -200,31 +200,32 @@ const studentsignup = async (req, res) => {
 
 const getProvideDateAndPriority = async (req, res) => {
     try {
-        const apiResponse = await axios.get(
-            "https://localhost:7227/api/Student/GetLinkedCourses",
-            {
-                httpsAgent: agent,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${req.user.token}`,
-                },
-            }
-        );
-        const apiResponse2 = await axios.get(
-            "https://localhost:7227/api/Student/GetAvailableCourses",
-            {
-                httpsAgent: agent,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${req.user.token}`,
-                },
-            }
-        );
-        let availableDates=[];
-        availableDates=apiResponse2.data.info;
-        console.log(apiResponse.data.info);
-        const linkWithcourses = apiResponse.data.info;
-        res.render("student/providedateandpriority", { linkWithcourses ,availableDates});
+        // const apiResponse = await axios.get(
+        //     "https://localhost:7227/api/Student/GetLinkedCourses",
+        //     {
+        //         httpsAgent: agent,
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             Authorization: `Bearer ${req.user.token}`,
+        //         },
+        //     }
+        // );
+        // const apiResponse2 = await axios.get(
+        //     "https://localhost:7227/api/Student/GetAvailableCourses",
+        //     {
+        //         httpsAgent: agent,
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             Authorization: `Bearer ${req.user.token}`,
+        //         },
+        //     }
+        // );
+        // let availableDates=[];
+        // availableDates=apiResponse2.data.info;
+        // console.log(apiResponse.data.info);
+        // const linkWithcourses = apiResponse.data.info;
+        // res.render("student/providedateandpriority", { linkWithcourses ,availableDates});
+        res.render("student/providedateandpriority");
     } catch (err) {
         console.error(err.message);
     }
