@@ -19,7 +19,9 @@ const{
     addcourse,
     addlink,
     fetchRoutine,
-    adminSignup
+    adminSignup,
+    getvalidatecr,
+    postvalidatecr
 } = require('../controllers/admin.controllers');
 
 router.get("/", getDashboard);
@@ -34,6 +36,9 @@ router.get('/add-course', getAddCourse);
 router.get('/add-link',getaddlink);
 router.get('/add-department',getadddepartment);
 router.get('/fetch-routine', fetchRoutine);
+
+//new api
+router.get('/getvalidatecr',getvalidatecr);
 
 
 
@@ -57,6 +62,9 @@ router.post('/admin/adddepartment',adddepartment);
 router.post('/admin/addprogramsemester',addprogramsemester);
 router.post('/admin/addexamschedule',addexamschedule);
 router.post('/admin/addcourse',addcourse);
-router.post('/admin/addlink',addlink)
+router.post('/admin/addlink',addlink);
+
+//new api
+router.post('/admin/postvalidatecr',postvalidatecr)
 
 module.exports = router;

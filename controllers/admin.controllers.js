@@ -408,6 +408,33 @@ const fetchRoutine = async (req, res) => {
   }
 };
 
+const getvalidatecr = async (req, res) => {
+  res.render("admin/validatecr");
+}
+
+//new apis
+const postvalidatecr = async (req, res) => {
+  let studentID=req.body.studentID;
+  try {
+    const apiResponse = await axios.post(
+      "https://localhost:7227/api/Admin/validatecr",
+      {
+        "studentID": studentID
+      },
+      {
+        httpsAgent: agent,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${req.user.token}`,
+        },
+      }
+    );
+    res.json(apiResponse.data.message);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
 
 module.exports = {
   getDashboard,
@@ -428,5 +455,7 @@ module.exports = {
   addcourse,
   addlink,
   fetchRoutine,
-  adminSignup
+  adminSignup,
+  getvalidatecr,
+  postvalidatecr
 };
